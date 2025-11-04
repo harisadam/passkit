@@ -11,10 +11,8 @@ module Passkit
       @url
     end
 
-    WALLET_PASS_PREFIX = "https://walletpass.io?u=".freeze
-    # @see https://walletpasses.io/developer/
     def android
-      "#{WALLET_PASS_PREFIX}#{@url}"
+      @url
     end
   end
 end
