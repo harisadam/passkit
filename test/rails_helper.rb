@@ -17,8 +17,14 @@ require "capybara/rails"
 
 Capybara.server = :webrick
 
-# Load fixtures from the engine
-if ActiveSupport::TestCase.respond_to?(:fixture_path=)
+# Load fixtures from the engine.
+# Rails 7.1+ dropped the singular fixture_path= setter in favor of fixture_paths=;
+# support both so this also still runs against the gem's originally supported Rails versions.
+if ActiveSupport::TestCase.respond_to?(:fixture_paths=)
+  ActionDispatch::IntegrationTest.fixture_paths = ActiveSupport::TestCase.fixture_paths
+  ActiveSupport::TestCase.file_fixture_path = ActiveSupport::TestCase.fixture_paths.first + "/files"
+  ActiveSupport::TestCase.fixtures :all
+elsif ActiveSupport::TestCase.respond_to?(:fixture_path=)
   ActionDispatch::IntegrationTest.fixture_path = ActiveSupport::TestCase.fixture_path
   ActiveSupport::TestCase.file_fixture_path = ActiveSupport::TestCase.fixture_path + "/files"
   ActiveSupport::TestCase.fixtures :all

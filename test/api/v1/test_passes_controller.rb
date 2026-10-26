@@ -25,7 +25,7 @@ class TestPassesController < ActionDispatch::IntegrationTest
     assert_equal 2, Passkit::Pass.count
     unzipped_passes = Zip::File.open_buffer(StringIO.new(response.body))
     assert_equal 2, unzipped_passes.size # the main zip file contains two passes
-    unzipped_pass =  Zip::File.open_buffer(unzipped_passes.first.zipfile)
+    unzipped_pass =  Zip::File.open_buffer(unzipped_passes.first.get_input_stream.read)
     assert_includes unzipped_passes.first.name, '.pkpass'
   end
 
